@@ -60,7 +60,8 @@ vim.api.nvim_create_autocmd({ 'BufEnter', 'BufWritePost', 'InsertLeave' }, {
 require('nvim-highlight-colors').setup { render = 'background' }
 
 -- auto-save
-require('auto-save').setup {}
+require('auto-save').setup { enabled = false }
+require('auto-save').off()
 
 -- guess-indent
 require('guess-indent').setup {}
@@ -71,17 +72,16 @@ require('todo-comments').setup { signs = false }
 -- Comment.nvim
 require('Comment').setup()
 
--- img-clip
-local year = os.date '%Y'
+-- img-clip: keep pasted images in the shared Applications image folder.
 require('img-clip').setup {
   default = {
-    dir_path = '/home/titus/github/website/static/images/' .. year .. '/',
+    dir_path = vim.fn.expand '~/Pictures/Applications',
     extension = 'webp',
-    process_cmd = '/usr/bin/cwebp -quiet -q 80 -o - -- - 2>/dev/null',
-    template = '![$FILE_NAME_NO_EXT](/images/' .. year .. '/$FILE_NAME)',
+    process_cmd = 'cwebp -quiet -q 80 -o - -- -',
+    use_absolute_path = true,
     relative_template_path = false,
   },
   filetypes = {
-    markdown = { template = '![$FILE_NAME_NO_EXT](/images/' .. year .. '/$FILE_NAME)' },
+    markdown = { template = '![$FILE_NAME_NO_EXT]($FILE_PATH)' },
   },
 }

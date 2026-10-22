@@ -37,7 +37,14 @@ end, { desc = '[F]ormat buffer' })
 
 -- LSP servers to configure
 local servers = {
-  -- clangd = {}, gopls = {}, pyright = {}, rust_analyzer = {}, ts_ls = {}
+  ts_ls = {},
+  pyright = {},
+  intelephense = {},
+  gopls = {},
+  jdtls = {
+    -- JDTLS bundles require Java 25; keep the shell's Java version unchanged.
+    cmd_env = { JAVA_HOME = '/opt/homebrew/opt/openjdk@25/libexec/openjdk.jdk/Contents/Home' },
+  },
   lua_ls = {
     settings = { Lua = { completion = { callSnippet = 'Replace' } } },
   },
@@ -46,7 +53,7 @@ local servers = {
 -- Map LSP server names to Mason package names where they differ
 local lsp_to_mason = {
   lua_ls = 'lua-language-server',
-  -- pyright = 'pyright', ts_ls = 'typescript-language-server',
+  ts_ls = 'typescript-language-server',
 }
 local ensure_installed = vim.tbl_keys(servers)
 for i, name in ipairs(ensure_installed) do
